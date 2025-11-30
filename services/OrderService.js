@@ -69,7 +69,6 @@ export async function update(id, body) {
             throw new Error('Pedido não encontrado');
         }
 
-        console.log("eita1");
         return result.rows[0];
     } catch (error) {
         console.error('Erro no service updateOrder:', error);
