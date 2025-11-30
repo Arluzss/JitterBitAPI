@@ -1,5 +1,5 @@
-const express = require('express');
-const orderRouter = require('./routes/OrderRoute');
+import express from 'express';
+import orderRouter from './routes/OrderRoute.js';
 
 const app = express();
 

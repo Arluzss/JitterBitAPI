@@ -1,7 +1,11 @@
+import { getById, remove, create, update, list } from '../services/OrderService.js';
+
 
 export async function createOrder(req, res) {
     try {
-        return res.json({msg: "Criando pedido"});
+        const body = req.body;
+        await create(body);
+        return res.json({ msg: "Criando pedido" });
     } catch (error) {
         return res.status(500).json({ error: "Falha ao criar o pedido" });
     }
@@ -9,7 +13,11 @@ export async function createOrder(req, res) {
 
 export async function updateOrder(req, res) {
     try {
-        return res.json({msg: "Atualizando pedido"});
+        const { id } = req.params;
+        const body = req.body;
+        const orderUpdated = await update(id, body);
+
+        return res.json({ orderUpdated });
     } catch (error) {
         return res.status(500).json({ error: "Falha ao atualizar o pedido" });
     }
@@ -17,7 +25,9 @@ export async function updateOrder(req, res) {
 
 export async function deleteOrder(req, res) {
     try {
-        return res.json({msg: "Deletando pedido"});
+        const { id } = req.params;
+        await remove(id);
+        return res.json({ msg: "Deletado" });
     } catch (error) {
         return res.status(500).json({ error: "Falha ao deletar o pedido" });
     }
@@ -25,7 +35,9 @@ export async function deleteOrder(req, res) {
 
 export async function getOrder(req, res) {
     try {
-        return res.json({msg: "Exibindo um pedido"});
+        const { id } = req.params;
+        const order = await getById(id);
+        return res.json({ order });
     } catch (error) {
         return res.status(500).json({ error: "Falha ao exibir o pedido" });
     }
@@ -33,7 +45,8 @@ export async function getOrder(req, res) {
 
 export async function getAllOrder(req, res) {
     try {
-        return res.json({msg: "Exibindo todos os pedido"});
+        const order = await list();
+        return res.json({ order });
     } catch (error) {
         return res.status(500).json({ error: "Falha ao listar pedidos" });
     }
