@@ -1,0 +1,192 @@
+{
+  "info": {
+    "_postman_id": "bff21e5c-fa41-447d-a1bc-c0aa6c75132a",
+    "name": "Desafio Jitterbit API",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Gerar Token",
+      "id": "ac117600-bcb4-4eff-bace-e301ce1da177",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "http://localhost:3000/genToken/91",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "genToken",
+            "91"
+          ]
+        },
+        "description": "## **POST /genToken/:id**\n\nGera um token JWT com base no identificador fornecido na URL.\n\nEsse token será utilizado para autenticar todas as rotas da entidade **Order**.\n\n---\n\n## **Requisitos de Autenticação**\n\nEsta rota **não exige token prévio**, pois sua função é justamente gerar um novo token.\n\n---\n\n## **Parâmetros da Rota**\n\n| Parâmetro | Local | Tipo | Obrigatório | Descrição |\n| --- | --- | --- | --- | --- |\n| `id` | URL (`:id`) | string ou number | Sim | Identificador que será incluído dentro do payload do token como `genID`. |\n\n---\n\n## **Exemplo de Requisição**\n\n### URL\n\n`http://localhost:3000/genToken/91`  \n\n---\n\n## **Exemplo de Resposta (200 OK)**\n\nResposta JSON contendo o token gerado:\n\n```\n{\n  \"token\": \"Baerer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"\n}\n\n ```"
+      }
+    },
+    {
+      "name": "Procurar pedido por ID",
+      "id": "d94cae7f-e36a-43bd-800d-013fc92a6618",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnZW5JRCI6IjkxIiwiaWF0IjoxNzY0NTg2OTk3LCJleHAiOjE3NjQ1OTA1OTd9.uIyaCSUGZIBoNFat_GfvsTWRe7kRO5gUEn8Mqlj02R8",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/order/v10089015v7db-01",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "order",
+            "v10089015v7db-01"
+          ]
+        },
+        "description": "## **GET /order/:id**\n\n### **Autenticação obrigatória**\n\nAcesso permitido somente com token JWT válido.\n\n**Header obrigatório**\n\n**`Authorization: Bearer`**\n\n### **Responses**\n\n**200 OK**\n\n```\n{\n  \"data\": {\n    \"id\": 1,\n    \"numeroPedido\": \"v10089015vdb-01\",\n    \"valorTotal\": 10000,\n    \"dataCriacao\": \"2023-07-19T12:24:11.5299601+00:00\",\n    \"items\": [\n      {\n        \"idItem\": \"2434\",\n        \"quantidadeItem\": 1,\n        \"valorItem\": 1000\n      }\n    ]\n  }\n}\n\n ```\n\n**404 Not Found**\n\n```\n{\n  \"error\": \"Pedido não encontrado\"\n}\n\n ```\n\n**500 Internal Server Error**\n\n```\n{\n  \"error\": \"Erro interno\"\n}\n\n ```"
+      }
+    },
+    {
+      "name": "Listar pedidos",
+      "id": "6b029ee7-4dd2-48fb-9e8a-f77ea2eebd76",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnZW5JRCI6IjkxIiwiaWF0IjoxNzY0NTg4MTY5LCJleHAiOjE3NjQ1OTE3Njl9.eNSJLrhS0eGhLH3LPD3cB5DngXp_-FJIew003LxRoec",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:3000/order/list",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "order",
+            "list"
+          ]
+        },
+        "description": "## **GET /order/list**\n\n### **Autenticação obrigatória**\n\nAcesso permitido somente com token JWT válido.\n\n**Header obrigatório**\n\n**`Authorization: Bearer`**\n\n### **Responses**\n\n**200 OK**\n\n```\n{\n    \"data\": [\n        {\n            \"orderid\": \"v10089015vdb-01\",\n            \"value\": 100,\n            \"creationdate\": \"2023-07-19T15:24:11.529Z\",\n            \"items\": [\n                {\n                    \"id\": 2,\n                    \"orderid\": \"v10089015vdb-01\",\n                    \"productid\": 2434,\n                    \"quantity\": 1,\n                    \"price\": 1000\n                }\n            ]\n        },\n        {\n            \"orderid\": \"v100890134vdb-01\",\n            \"value\": 100,\n            \"creationdate\": \"2023-07-19T15:24:11.529Z\",\n            \"items\": [\n                {\n                    \"id\": 3,\n                    \"orderid\": \"v100890134vdb-01\",\n                    \"productid\": 2434,\n                    \"quantity\": 1,\n                    \"price\": 10000\n                }\n            ]\n        },\n        {\n            \"orderid\": \"v10089015vfdb-01\",\n            \"value\": 10000,\n            \"creationdate\": \"2023-07-19T15:24:11.529Z\",\n            \"items\": [\n                {\n                    \"id\": 4,\n                    \"orderid\": \"v10089015vfdb-01\",\n                    \"productid\": 2434,\n                    \"quantity\": 1,\n                    \"price\": 1000\n                }\n            ]\n        }\n    ]\n}\n\n ```\n\n**500 Internal Server Error**\n\n```\n{\n  \"error\": \"Erro interno\"\n}\n\n ```"
+      }
+    },
+    {
+      "name": "Excluír pedido",
+      "id": "a3c156c8-26bf-40cb-8514-cf374e43559f",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnZW5JRCI6IjkxIiwiaWF0IjoxNzY0NTg4MTY5LCJleHAiOjE3NjQ1OTE3Njl9.eNSJLrhS0eGhLH3LPD3cB5DngXp_-FJIew003LxRoec",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/order/v10089015vdb-01",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "order",
+            "v10089015vdb-01"
+          ]
+        },
+        "description": "## **DELETE /order/:id**\n\n### **Autenticação obrigatória**\n\nAcesso permitido somente com token JWT válido.\n\n**Header obrigatório**\n\n**`Authorization: Bearer`**\n\n### **Responses**\n\n**204 No Content**\n\n**404 Not Found**\n\n```\n{\n  \"error\": \"Pedido não encontrado\"\n}\n\n ```\n\n**500 Internal Server Error**\n\n```\n{\n  \"error\": \"Erro interno\"\n}\n\n ```"
+      }
+    },
+    {
+      "name": "Atualizar pedido",
+      "id": "6e0884df-c56d-4af7-b383-a4d404422c24",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnZW5JRCI6IjkxIiwiaWF0IjoxNzY0NTg2OTk3LCJleHAiOjE3NjQ1OTA1OTd9.uIyaCSUGZIBoNFat_GfvsTWRe7kRO5gUEn8Mqlj02R8",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"numeroPedido\": \"v10089015v7db-01\",\r\n  \"valorTotal\": 10000,\r\n  \"dataCriacao\": \"2023-07-19T12:24:11.5299601+00:00\",\r\n  \"items\": [\r\n    {\r\n      \"idItem\": \"2434\",\r\n      \"quantidadeItem\": 1,\r\n      \"valorItem\": 1000\r\n    }\r\n  ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/order/v10089015v7db-01",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "order",
+            "v10089015v7db-01"
+          ]
+        },
+        "description": "## **PUT /order/:id**\n\n### **Autenticação obrigatória**\n\nAcesso permitido somente com token JWT válido.\n\n**Header obrigatório**\n\n**`Authorization: Bearer`**\n\n### **Body (JSON)**\n\nMesmo formato do POST:\n\n```\n{\n  \"numeroPedido\": \"v10089015vdb-01\",\n  \"valorTotal\": 15000,\n  \"dataCriacao\": \"2023-07-19T12:24:11.5299601+00:00\",\n  \"items\": [\n    {\n      \"idItem\": \"2434\",\n      \"quantidadeItem\": 2,\n      \"valorItem\": 1000\n    }\n  ]\n}\n\n ```\n\n### **Responses**\n\n**200 OK**\n\n```\nmessage: \"Pedido atualizado com sucesso\"\n\n ```\n\n**404 Not Found**\n\n```\n{\n  \"error\": \"Pedido não encontrado\"\n}\n\n ```\n\n**500 Internal Server Error**\n\n```\n{\n  \"error\": \"Erro interno\"\n}\n\n ```"
+      }
+    },
+    {
+      "name": "Criar um pedido",
+      "id": "e2782119-276e-40a2-b667-757dfc8e57ee",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnZW5JRCI6IjkxIiwiaWF0IjoxNzY0NTg1Mzk3LCJleHAiOjE3NjQ1ODg5OTd9.dxf2PiCwoqkt--lPOmYAegkDmLy7mEJitQB2COq7Kus",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"numeroPedido\": \"v10089015vdb-01\",\r\n  \"valorTotal\": 10000,\r\n  \"dataCriacao\": \"2023-07-19T12:24:11.5299601+00:00\",\r\n  \"items\": [\r\n    {\r\n      \"idItem\": \"2434\",\r\n      \"quantidadeItem\": 1,\r\n      \"valorItem\": 1000\r\n    }\r\n  ]\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/order/",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "order",
+            ""
+          ]
+        },
+        "description": "## **POST /order**\n\n### **Autenticação obrigatória**\n\nEsta rota só pode ser acessada com token JWT válido.\n\n**Header obrigatório**\n\n**`Authorization: Bearer`**\n\n### **Body (JSON)**\n\n```\n{\n  \"numeroPedido\": \"v10089015vdb-01\",\n  \"valorTotal\": 10000,\n  \"dataCriacao\": \"2023-07-19T12:24:11.5299601+00:00\",\n  \"items\": [\n    {\n      \"idItem\": \"2434\",\n      \"quantidadeItem\": 1,\n      \"valorItem\": 1000\n    }\n  ]\n}\n\n ```\n\n### **Responses**\n\n**201 Created**\n\n```\n{\n  \"message\": \"Pedido criado com sucesso\"\n}\n\n ```\n\n**`409 Conflict`**\n\n```\n{\n  \"error\": \"Pedido já existe\"\n}\n\n ```\n\n**500 Internal Server Error**\n\n```\n{\n  \"error\": \"Erro interno\"\n}\n\n ```"
+      }
+    }
+  ]
+}

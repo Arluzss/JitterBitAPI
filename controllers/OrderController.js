@@ -18,13 +18,14 @@ export class OrderController {
     try {
       const { id } = req.params;
       const body = req.body;
+      console.log(body);
       const orderUpdated = await orderService.update(id, body);
 
       if (!orderUpdated) {
         return res.status(404).json({ error: "Pedido não encontrado" });
       }
 
-      return res.status(200).json({ orderUpdated });
+      return res.status(200).json({ message: "Pedido atualizado com sucesso" });
     } catch (error) {
       if (error.message === 'Pedido não encontrado') {
         return res.status(404).json({ error: error.message });
