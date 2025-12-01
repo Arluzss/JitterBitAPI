@@ -1,4 +1,4 @@
-import { getById, remove, create, update, list } from '../services/OrderService.js';
+import orderService from '../services/OrderService.js';
 
 export class OrderController {
   async create(req, res) {
@@ -18,7 +18,7 @@ export class OrderController {
     try {
       const { id } = req.params;
       const body = req.body;
-      const orderUpdated = await update(id, body);
+      const orderUpdated = await orderService.update(id, body);
 
       if (!orderUpdated) {
         return res.status(404).json({ error: "Pedido não encontrado" });
@@ -36,7 +36,7 @@ export class OrderController {
   async delete(req, res) {
     try {
       const { id } = req.params;
-      const result = await remove(id);
+      const result = await orderService.remove(id);
 
       if (!result) {
         return res.status(404).json({ error: "Pedido não encontrado" });
@@ -51,7 +51,7 @@ export class OrderController {
   async get(req, res) {
     try {
       const { id } = req.params;
-      const order = await getById(id);
+      const order = await orderService.getById(id);
 
       if (!order) {
         return res.status(404).json({ error: "Pedido não encontrado" });
@@ -65,7 +65,7 @@ export class OrderController {
 
   async list(req, res) {
     try {
-      const orders = await list();
+      const orders = await orderService.list();
       return res.status(200).json({ data: orders });
     } catch (error) {
       return res.status(500).json({ error: "Erro interno" });
