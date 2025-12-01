@@ -5,9 +5,12 @@ export async function createOrder(req, res) {
     try {
         const body = req.body;
         await create(body);
-        return res.json({ msg: "Criando pedido" });
+        return res.status(201).json({ message: "Pedido criado com sucesso" });
     } catch (error) {
-        return res.status(500).json({ error: "Falha ao criar o pedido" });
+        if (error && error.message === 'Pedido já existe') {
+            return res.status(409).json({ error: error.message });
+        }
+        return res.status(500).json({ error: "Erro interno" });
     }
 }
 
@@ -17,19 +20,31 @@ export async function updateOrder(req, res) {
         const body = req.body;
         const orderUpdated = await update(id, body);
 
-        return res.json({ orderUpdated });
+        if (!orderUpdated) {
+            return res.status(404).json({ error: "Pedido não encontrado" });
+        }
+
+        return res.status(200).json({ orderUpdated });
     } catch (error) {
-        return res.status(500).json({ error: "Falha ao atualizar o pedido" });
+        if (error.message === 'Pedido não encontrado') {
+            return res.status(404).json({ error: error.message })
+        }
+        return res.status(500).json({ error: "Erro interno" });
     }
 }
 
 export async function deleteOrder(req, res) {
     try {
         const { id } = req.params;
-        await remove(id);
-        return res.json({ msg: "Deletado" });
+        const result = await remove(id);
+
+        if (!result) {
+            return res.status(404).json({ error: "Pedido não encontrado" });
+        }
+
+        return res.status(204).send();
     } catch (error) {
-        return res.status(500).json({ error: "Falha ao deletar o pedido" });
+        return res.status(500).json({ error: "Erro interno" });
     }
 }
 
@@ -37,17 +52,22 @@ export async function getOrder(req, res) {
     try {
         const { id } = req.params;
         const order = await getById(id);
-        return res.json({ order });
+
+        if (!order) { 
+            return res.status(404).json({ error: "Pedido não encontrado" }) 
+        };
+
+        return res.status(200).json({ data: order });
     } catch (error) {
-        return res.status(500).json({ error: "Falha ao exibir o pedido" });
+        return res.status(500).json({ error: "Erro interno" });
     }
 }
 
 export async function getAllOrder(req, res) {
     try {
-        const order = await list();
-        return res.json({ order });
+        const orders = await list();
+        return res.status(200).json({ data: orders });
     } catch (error) {
-        return res.status(500).json({ error: "Falha ao listar pedidos" });
+        return res.status(500).json({ error: "Erro interno" });
     }
 }

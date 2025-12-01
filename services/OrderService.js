@@ -44,7 +44,7 @@ export async function getById(id) {
 export async function remove(id) {
     try {
         const result = await pool.query(
-            'DELETE FROM orders WHERE orderId = $1', [id]
+            'DELETE FROM orders WHERE orderId = $1 RETURNING *', [id]
         );
 
         if (result.rowCount === 0) {
@@ -95,6 +95,9 @@ export async function create(body) {
 
     } catch (err) {
         console.error('Erro no service createOrder:', err);
+        if (err && err.code === '23505') {
+            throw new Error('Pedido já existe');
+        }
         throw new Error('Erro ao criar pedido');
     }
 }
