@@ -43,8 +43,14 @@ export async function getById(id) {
 
 export async function remove(id) {
     try {
+        await pool.query(
+            'DELETE FROM order_items WHERE orderId = $1',
+            [id]
+        );
+
         const result = await pool.query(
-            'DELETE FROM orders WHERE orderId = $1 RETURNING *', [id]
+            'DELETE FROM orders WHERE orderId = $1 RETURNING *',
+            [id]
         );
 
         if (result.rowCount === 0) {
